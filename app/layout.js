@@ -6,12 +6,19 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { shadesOfPurple } from "@clerk/themes";
 import "react-day-picker/dist/style.css";
 import { Toaster } from "sonner";
+import { Github } from "lucide-react";
+import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800"]
+});
 
 export const metadata = {
-  title: "Jira Clone",
-  description: "",
+  title: "Agilify",
+  description: "Project Management Simplified",
 };
 
 export default function RootLayout({ children }) {
@@ -33,15 +40,24 @@ export default function RootLayout({ children }) {
         },
       }}
     >
-      <html lang="en">
-        <body className={`${inter.className} animated-dotted-background`}>
+      <html lang="en" className={`${inter.variable}`}>
+        <body className={`font-sans animated-dotted-background`}>
           <ThemeProvider attribute="class" defaultTheme="dark">
             <Header />
             <main className="min-h-screen">{children}</main>
             <Toaster richColors />
             <footer className="bg-gray-900 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made with 💗 by RoadsideCoder</p>
+                <p className="mb-2">Made with 💗 by CoderYashVij</p>
+                <Link 
+                  href="https://github.com/CoderYashVij" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  <Github size={18} />
+                  <span>GitHub</span>
+                </Link>
               </div>
             </footer>
           </ThemeProvider>

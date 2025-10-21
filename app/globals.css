@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* Removing the hard-coded font-family so the Next.js font system works correctly */
 
 @layer utilities {
   .text-balance {
@@ -69,11 +67,15 @@ body {
 }
 
 @layer base {
+  :root {
+    --font-sans: var(--font-inter);
+  }
+  
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 

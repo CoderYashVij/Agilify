@@ -18,7 +18,9 @@ export default clerkMiddleware((auth, req) => {
     auth().userId &&
     !auth().orgId &&
     req.nextUrl.pathname !== "/onboarding" &&
-    req.nextUrl.pathname !== "/"
+    req.nextUrl.pathname !== "/" && 
+    !req.nextUrl.pathname.startsWith("/organization/") &&
+    !req.nextUrl.pathname.startsWith("/project/")
   ) {
     return NextResponse.redirect(new URL("/onboarding", req.url));
   }

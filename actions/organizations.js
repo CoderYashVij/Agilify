@@ -8,6 +8,7 @@ export async function getOrganization(slug) {
   if (!userId) {
     throw new Error("Unauthorized");
   }
+  console.log("Slug:", slug);
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },

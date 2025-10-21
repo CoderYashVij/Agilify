@@ -9,7 +9,7 @@ export default async function ProjectList({ orgId }) {
 
   if (projects.length === 0) {
     return (
-      <p>
+      <p className="text-white">
         No projects found.{" "}
         <Link
           className="underline underline-offset-2 text-blue-200"
