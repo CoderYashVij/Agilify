@@ -4,7 +4,8 @@ import { db } from "@/lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export async function createProject(data) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id; // Get organizationId from the data
 
   if (!userId) {
     throw new Error("Unauthorized");
@@ -45,7 +46,8 @@ export async function createProject(data) {
 }
 
 export async function getProject(projectId) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
@@ -83,13 +85,15 @@ export async function getProject(projectId) {
 }
 
 export async function deleteProject(projectId) {
-  const { userId, orgId, orgRole } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
+  const orgRole = sessionClaims?.o?.rol;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
   }
 
-  if (orgRole !== "org:admin") {
+  if (orgRole !== "admin") {
     throw new Error("Only organization admins can delete projects");
   }
 

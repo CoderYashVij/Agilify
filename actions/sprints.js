@@ -4,7 +4,9 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export async function createSprint(projectId, data) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
@@ -33,7 +35,9 @@ export async function createSprint(projectId, data) {
 }
 
 export async function updateSprintStatus(sprintId, newStatus) {
-  const { userId, orgId, orgRole } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
+  const orgRole = sessionClaims?.o?.rol;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
@@ -44,7 +48,7 @@ export async function updateSprintStatus(sprintId, newStatus) {
       where: { id: sprintId },
       include: { project: true },
     });
-    console.log(sprint, orgRole);
+    // console.log(sprint, orgRole);
 
     if (!sprint) {
       throw new Error("Sprint not found");
@@ -54,7 +58,7 @@ export async function updateSprintStatus(sprintId, newStatus) {
       throw new Error("Unauthorized");
     }
 
-    if (orgRole !== "org:admin") {
+    if (orgRole !== "admin") {
       throw new Error("Only Admin can make this change");
     }
 

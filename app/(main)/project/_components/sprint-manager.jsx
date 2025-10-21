@@ -16,6 +16,7 @@ import { formatDistanceToNow, isAfter, isBefore, format } from "date-fns";
 
 import useFetch from "@/hooks/use-fetch";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 import { updateSprintStatus } from "@/actions/sprints";
 
@@ -51,13 +52,21 @@ export default function SprintManager({
 
   useEffect(() => {
     if (updatedStatus && updatedStatus.success) {
+      const statusText = updatedStatus.sprint.status === "ACTIVE" ? "started" : "ended";
+      toast.success(`Sprint ${statusText} successfully!`);
       setStatus(updatedStatus.sprint.status);
       setSprint({
         ...sprint,
         status: updatedStatus.sprint.status,
       });
     }
-  }, [updatedStatus, loading]);
+  }, [updatedStatus]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message || "Failed to update sprint status");
+    }
+  }, [error]);
 
   const getStatusText = () => {
     if (status === "COMPLETED") {
@@ -81,7 +90,7 @@ export default function SprintManager({
         setStatus(selectedSprint.status);
       }
     }
-  }, [searchParams, sprints]);
+  }, [searchParams]);
 
   const handleSprintChange = (value) => {
     const selectedSprint = sprints.find((s) => s.id === value);
@@ -94,7 +103,7 @@ export default function SprintManager({
     <>
       <div className="flex justify-between items-center gap-4">
         <Select value={sprint.id} onValueChange={handleSprintChange}>
-          <SelectTrigger className="bg-slate-950 self-start">
+          <SelectTrigger className="bg-background border-input self-start">
             <SelectValue placeholder="Select Sprint" />
           </SelectTrigger>
           <SelectContent>
@@ -111,7 +120,7 @@ export default function SprintManager({
           <Button
             onClick={() => handleStatusChange("ACTIVE")}
             disabled={loading}
-            className="bg-green-900 text-white"
+            className="bg-green-600 hover:bg-green-700 text-white"
           >
             Start Sprint
           </Button>

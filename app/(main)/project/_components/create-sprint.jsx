@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,7 @@ import { format, addDays } from "date-fns";
 import { sprintSchema } from "@/app/lib/validators";
 import useFetch from "@/hooks/use-fetch";
 import { createSprint } from "@/actions/sprints";
+import { toast } from "sonner";
 
 export default function SprintCreationForm({
   projectTitle,
@@ -35,7 +36,7 @@ export default function SprintCreationForm({
   });
   const router = useRouter();
 
-  const { loading: createSprintLoading, fn: createSprintFn } =
+  const { loading: createSprintLoading, fn: createSprintFn, data: createdSprint, error } =
     useFetch(createSprint);
 
   const {
@@ -58,9 +59,21 @@ export default function SprintCreationForm({
       startDate: dateRange.from,
       endDate: dateRange.to,
     });
-    setShowForm(false);
-    router.refresh(); // Refresh the page to show updated data
   };
+
+  useEffect(() => {
+    if (createdSprint) {
+      toast.success("Sprint created successfully!");
+      setShowForm(false);
+      router.refresh();
+    }
+  }, [createdSprint, router]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message || "Failed to create sprint");
+    }
+  }, [error]);
 
   return (
     <>
@@ -94,7 +107,7 @@ export default function SprintCreationForm({
                   id="name"
                   {...register("name")}
                   readOnly
-                  className="bg-slate-950"
+                  className="bg-background border-input"
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">
@@ -111,11 +124,11 @@ export default function SprintCreationForm({
                   name="dateRange"
                   render={({ field }) => (
                     <Popover>
-                      <PopoverTrigger asChild>
+                        <PopoverTrigger asChild>
                         <Button
                           variant="outline"
-                          className={`w-full justify-start text-left font-normal bg-slate-950 ${
-                            !dateRange && "text-muted-foreground"
+                          className={`w-full justify-start text-left font-normal bg-background border-input ${
+                            !dateRange?.from ? "text-muted-foreground" : ""
                           }`}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -123,13 +136,16 @@ export default function SprintCreationForm({
                             format(dateRange.from, "LLL dd, y") +
                             " - " +
                             format(dateRange.to, "LLL dd, y")
+                          ) : dateRange.from ? (
+                            // show only the start date when end isn't picked yet
+                            format(dateRange.from, "LLL dd, y") + " - " + "Pick end"
                           ) : (
                             <span>Pick a date</span>
                           )}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent
-                        className="w-auto bg-slate-900"
+                        className="w-auto bg-popover"
                         align="start"
                       >
                         <DayPicker
@@ -145,10 +161,10 @@ export default function SprintCreationForm({
                           disabled={[{ before: new Date() }]}
                           selected={dateRange}
                           onSelect={(range) => {
-                            if (range?.from && range?.to) {
-                              setDateRange(range);
-                              field.onChange(range);
-                            }
+                            // Update immediately when user picks a start (or end) date so
+                            // the UI reflects partial selections and it's easier to choose start first.
+                            setDateRange(range || { from: undefined, to: undefined });
+                            field.onChange(range || { from: undefined, to: undefined });
                           }}
                         />
                       </PopoverContent>

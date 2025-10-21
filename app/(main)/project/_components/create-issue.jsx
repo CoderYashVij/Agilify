@@ -24,6 +24,7 @@ import useFetch from "@/hooks/use-fetch";
 import { createIssue } from "@/actions/issues";
 import { getOrganizationUsers } from "@/actions/organizations";
 import { issueSchema } from "@/app/lib/validators";
+import { toast } from "sonner";
 
 export default function IssueCreationDrawer({
   isOpen,
@@ -78,12 +79,19 @@ export default function IssueCreationDrawer({
 
   useEffect(() => {
     if (newIssue) {
+      toast.success("Issue created successfully!");
       reset();
       onClose();
       onIssueCreated();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newIssue, createIssueLoading]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message || "Failed to create issue");
+    }
+  }, [error]);
 
   return (
     <Drawer open={isOpen} onClose={onClose}>
@@ -185,7 +193,6 @@ export default function IssueCreationDrawer({
             />
           </div>
 
-          {error && <p className="text-red-500 mt-2">{error.message}</p>}
           <Button
             type="submit"
             disabled={createIssueLoading}

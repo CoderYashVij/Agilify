@@ -74,8 +74,8 @@ export default function BoardFilters({ issues, onFilterChange }) {
               return (
                 <div
                   key={assignee.id}
-                  className={`rounded-full ring ${
-                    selected ? "ring-blue-600" : "ring-black"
+                  className={`rounded-full ring cursor-pointer ${
+                    selected ? "ring-blue-600" : "ring-border"
                   } ${i > 0 ? "-ml-6" : ""}`}
                   style={{
                     zIndex: i,

@@ -68,7 +68,8 @@ export async function getProjects(orgId) {
 }
 
 export async function getUserIssues(userId) {
-  const { orgId } = auth();
+  const { sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("No user id or organization id found");

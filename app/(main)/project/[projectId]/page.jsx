@@ -2,9 +2,11 @@ import { getProject } from "@/actions/projects";
 import { notFound } from "next/navigation";
 import SprintCreationForm from "../_components/create-sprint";
 import SprintBoard from "../_components/sprint-board";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function ProjectPage({ params }) {
   const { projectId } = params;
+
   const project = await getProject(projectId);
 
   if (!project) {
@@ -27,7 +29,11 @@ export default async function ProjectPage({ params }) {
           orgId={project.organizationId}
         />
       ) : (
-        <div>Create a Sprint from button above</div>
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <p className="text-muted-foreground text-lg">
+            Create a Sprint from button above to get started
+          </p>
+        </div>
       )}
     </div>
   );

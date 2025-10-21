@@ -22,6 +22,7 @@ import {
 import { BarLoader } from "react-spinners";
 import { ExternalLink } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import statuses from "@/data/status";
 import { deleteIssue, updateIssue } from "@/actions/issues";
@@ -75,13 +76,24 @@ export default function IssueDetailsDialog({
 
   useEffect(() => {
     if (deleted) {
+      toast.success("Issue deleted successfully!");
       onClose();
       onDelete();
     }
     if (updated) {
+      toast.success("Issue updated successfully!");
       onUpdate(updated);
     }
-  }, [deleted, updated, deleteLoading, updateLoading]);
+  }, [deleted, updated, deleteLoading, updateLoading, onClose, onDelete, onUpdate]);
+
+  useEffect(() => {
+    if (deleteError) {
+      toast.error(deleteError.message || "Failed to delete issue");
+    }
+    if (updateError) {
+      toast.error(updateError.message || "Failed to update issue");
+    }
+  }, [deleteError, updateError]);
 
   const canChange =
     user.id === issue.reporter.clerkUserId || membership.role === "org:admin";
@@ -169,11 +181,6 @@ export default function IssueDetailsDialog({
             >
               {deleteLoading ? "Deleting..." : "Delete Issue"}
             </Button>
-          )}
-          {(deleteError || updateError) && (
-            <p className="text-red-500">
-              {deleteError?.message || updateError?.message}
-            </p>
           )}
         </div>
       </DialogContent>

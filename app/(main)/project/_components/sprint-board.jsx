@@ -160,7 +160,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
       )}
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 bg-slate-900 p-4 rounded-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 bg-card border border-border p-4 rounded-lg">
           {statuses.map((column) => (
             <Droppable key={column.key} droppableId={column.key}>
               {(provided) => (
@@ -169,7 +169,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                   ref={provided.innerRef}
                   className="space-y-2"
                 >
-                  <h3 className="font-semibold mb-2 text-center">
+                  <h3 className="font-semibold mb-2 text-center text-foreground">
                     {column.name}
                   </h3>
                   {filteredIssues

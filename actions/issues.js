@@ -4,7 +4,8 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export async function getIssuesForSprint(sprintId) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
@@ -23,7 +24,8 @@ export async function getIssuesForSprint(sprintId) {
 }
 
 export async function createIssue(projectId, data) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
@@ -60,7 +62,8 @@ export async function createIssue(projectId, data) {
 }
 
 export async function updateIssueOrder(updatedIssues) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
@@ -84,7 +87,8 @@ export async function updateIssueOrder(updatedIssues) {
 }
 
 export async function deleteIssue(issueId) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
@@ -120,7 +124,8 @@ export async function deleteIssue(issueId) {
 }
 
 export async function updateIssue(issueId, data) {
-  const { userId, orgId } = auth();
+  const { userId, sessionClaims } = auth();
+  const orgId = sessionClaims?.o?.id;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");

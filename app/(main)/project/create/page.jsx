@@ -13,6 +13,7 @@ import { projectSchema } from "@/app/lib/validators";
 import { createProject } from "@/actions/projects";
 import { BarLoader } from "react-spinners";
 import OrgSwitcher from "@/components/org-switcher";
+import { toast } from "sonner";
 
 export default function CreateProjectPage() {
   const router = useRouter();
@@ -43,16 +44,33 @@ export default function CreateProjectPage() {
 
   const onSubmit = async (data) => {
     if (!isAdmin) {
-      alert("Only organization admins can create projects");
+      toast.error("Only organization admins can create projects");
       return;
+    }
+
+    if (!membership || !membership.organization) {
+      toast.error("Please select an organization first");
+      return;
+    } else {
+      // console.log(membership.organization);
+      // console.log("Data to be sent:", data);
     }
 
     createProjectFn(data);
   };
 
   useEffect(() => {
-    if (project) router.push(`/project/${project.id}`);
-  }, [loading]);
+    if (project) {
+      toast.success("Project created successfully!");
+      router.push(`/project/${project.id}`);
+    }
+  }, [loading, project, router]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message || "Failed to create project");
+    }
+  }, [error]);
 
   if (!isOrgLoaded || !isUserLoaded) {
     return null;
@@ -83,7 +101,7 @@ export default function CreateProjectPage() {
           <Input
             id="name"
             {...register("name")}
-            className="bg-slate-950"
+            className="bg-background border-input"
             placeholder="Project Name"
           />
           {errors.name && (
@@ -94,7 +112,7 @@ export default function CreateProjectPage() {
           <Input
             id="key"
             {...register("key")}
-            className="bg-slate-950"
+            className="bg-background border-input"
             placeholder="Project Key (Ex: RCYT)"
           />
           {errors.key && (
@@ -105,7 +123,7 @@ export default function CreateProjectPage() {
           <Textarea
             id="description"
             {...register("description")}
-            className="bg-slate-950 h-28"
+            className="bg-background border-input h-28"
             placeholder="Project Description"
           />
           {errors.description && (
@@ -121,11 +139,10 @@ export default function CreateProjectPage() {
           type="submit"
           size="lg"
           disabled={loading}
-          className="bg-blue-500 text-white"
+          className="bg-blue-500 hover:bg-blue-600 text-white"
         >
           {loading ? "Creating..." : "Create Project"}
         </Button>
-        {error && <p className="text-red-500 mt-2">{error.message}</p>}
       </form>
     </div>
   );
