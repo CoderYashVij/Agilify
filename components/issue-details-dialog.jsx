@@ -84,7 +84,7 @@ export default function IssueDetailsDialog({
       toast.success("Issue updated successfully!");
       onUpdate(updated);
     }
-  }, [deleted, updated, deleteLoading, updateLoading, onClose, onDelete, onUpdate]);
+  }, [deleted, updated, deleteLoading, updateLoading]);
 
   useEffect(() => {
     if (deleteError) {
