@@ -455,7 +455,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 📧 Support
 
-For support, email yashvij.work@gmail.com or open an issue in the repository.
+For support, email vij.yash.work@gmail.com or open an issue in the repository.
 
 ---
 
