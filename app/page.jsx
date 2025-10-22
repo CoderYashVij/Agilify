@@ -82,7 +82,7 @@ export default function Home() {
           <span className="flex mx-auto gap-3 sm:gap-4 items-center">
             with
             <Image
-              src={"/logo2.png"}
+              src={"/logo.png"}
               alt="Agilify Logo"
               width={400}
               height={80}

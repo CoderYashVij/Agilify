@@ -19,6 +19,16 @@ const inter = Inter({
 export const metadata = {
   title: "Agilify",
   description: "Project Management Simplified",
+  icons: {
+    icon: [
+      {
+        url: "/logo.png",
+        href: "/logo.png",
+      }
+    ],
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({ children }) {
