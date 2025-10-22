@@ -7,9 +7,14 @@ export async function createSprint(projectId, data) {
   const { userId, sessionClaims } = auth();
 
   const orgId = sessionClaims?.o?.id;
+  const orgRole = sessionClaims?.o?.rol;
 
   if (!userId || !orgId) {
     throw new Error("Unauthorized");
+  }
+
+  if(orgRole !== "admin"){
+    throw new Error("Only Admin can create a sprint");
   }
 
   const project = await db.project.findUnique({
