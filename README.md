@@ -91,12 +91,12 @@
 ## 📸 Screenshots
 
 <div align="center">
-  <img src="/public/screenshots/landing.png" alt="Landing Page" width="45%"/>
-  <img src="/public/screenshots/organization.png" alt="Organization Dashboard" width="45%"/>
-  <img src="/public/screenshots/kanban.png" alt="Kanban Board - Drag & Drop" width="45%"/>
-  <img src="/public/screenshots/createSprint.png" alt="Create Sprint" width="45%"/>
-  <img src="/public/screenshots/createIssue.png" alt="Create New Issue" width="45%"/>
-  <img src="/public/screenshots/issueDetails.png" alt="Issue Details with Markdown Editor" width="45%"/>
+  <img src="/public/screenshots/landing.PNG" alt="Landing Page" width="45%"/>
+  <img src="/public/screenshots/organization.PNG" alt="Organization Dashboard" width="45%"/>
+  <img src="/public/screenshots/kanban.PNG" alt="Kanban Board - Drag & Drop" width="45%"/>
+  <img src="/public/screenshots/createSprint.PNG" alt="Create Sprint" width="45%"/>
+  <img src="/public/screenshots/createIssue.PNG" alt="Create New Issue" width="45%"/>
+  <img src="/public/screenshots/issueDetails.PNG" alt="Issue Details with Markdown Editor" width="45%"/>
 </div>
 
 ---
